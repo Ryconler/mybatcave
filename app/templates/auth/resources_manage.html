@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{% block title %}BatCave-管理{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>资源管理</h1>
+</div>
+{% for post in posts %}
+<form method="POST">
+    {{ post.id }}
+    {{ post.title }}
+    <a href="{{ url_for('.edit_title',id=post.id)}}">编辑</a>
+    {{ post.url }}
+    <a href="{{ url_for('.edit_url',id=post.id)}}">编辑</a>
+    {{ post.theme }}
+    <a href="{{ url_for('.edit_theme',id=post.id)}}">编辑</a>
+    <a href="{{ url_for('.delete',id=post.id)}}">删除</a>
+</form>
+
+{% endfor %}
+
+{% if pagination %}
+<div class="pagination">
+    {{ macros.pagination_widget(pagination, '.resources_manage') }}
+</div>
+{% endif %}
+
+
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{% block title %}BatCave-用户管理{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>用户管理</h1>
+</div>
+{% for user in users %}
+{{ user.id}}
+<mark>{{ user.username }}</mark>
+{{ user.register_date }}
+<a href="{{ url_for('.manage_password',id=user.id)}}">修改密码</a>
+<br>
+{% endfor %}
+
+{% if pagination %}
+<div class="pagination">
+    {{ macros.pagination_widget(pagination, '.users_manage') }}
+</div>
+{% endif %}
+
+
+
+{% endblock %}

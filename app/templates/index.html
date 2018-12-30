@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{% block page_content %}
+
+<div class="page-header">
+    <h1>欢迎来到BatCave</h1>
+</div>
+<h4><em>蝙蝠洞里都有些什么？...</em></h4>
+<h3 style="color:blue">&ordm;&nbsp;链接资源<最新></h3>
+<ul class="posts">
+    {% for post in posts %}
+    <li class="post">
+        <div class="post-title">
+            <span style="color:#606060">[{{(post.theme)[0:2]}}]</span>
+            <a href="
+        {% if (post.url)[0:4]=='http' %}
+            {{post.url}}
+        {% else %}
+            'https://'+{{post.url}}
+        {% endif %}" target="_blank" > {{post.title}}</a></div>
+        <div class="post-info"><a href="">{{(users.query.filter_by(id=post.author_id).first()).username}}</a> &nbsp;分享于&nbsp;<em>{{post.post_date}}</em>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+<a style="float:right;margin:7px 0;" href="{{ url_for('.url_resources')}}"><strong>>>&nbsp;更多资源...</strong></a>
+<br>
+<a href="{{ url_for('.myfiles')}}"><h3 style="color:red">&ordm;&nbsp;我的文件>>></h3></a>
+{% endblock %}
+
+
+

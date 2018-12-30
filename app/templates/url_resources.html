@@ -1,0 +1,62 @@
+
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+
+{% block page_content %}
+<div class="page-header">
+    <h1>URL资源</h1>
+    <a href="{{url_for('auth.share')}}">我要分享</a>
+</div>
+<ul class="category">
+    <li><strong>热门链接：</strong></li>
+    {% for hot in hots %}
+    <li><a href="{{hot.url}}" target="_blank" title="{{ hot.title}}">{% if (hot.title)|length<=4 %}{{ hot.title }}{% else %}{{hot.title[0:4]}}...{% endif %}</a>
+    </li>
+    {% endfor %}
+
+    <li style="margin-left:40px;"><strong>排序方式：</strong></li>
+    <li class="as"><a href="{{ url_for('main.sort_datetime') }}" style="color:#BE77FF;">分享时间</a> </li>
+    <li class="as"><a href="{{ url_for('main.sort_hot') }}" style="color:#FF2D2D">喜欢数量</a> </li>
+
+
+    <li>
+        <form method="POST" class="form">
+
+            {{ form.hidden_tag() }}
+            {{ form.search(class='col-md-9') }}
+            {{ form.submit(class='col-md-3') }}
+        </form>
+    </li>
+
+</ul>
+
+<ul class="posts">
+    {% for post in posts %}
+    <li class="post">
+        <div class="post-title">
+
+            {% if not current_user.is_liking(post) %}
+            <a href="{{ url_for('main.like',id=post.id) }}"><img src="{{ url_for('static',filename='like.png')}}" width="40px"></a>
+            {% else %}
+            <a href="{{ url_for('main.unlike',id=post.id) }}"><img src="{{ url_for('static',filename='liked.png')}}" width="40px"></a>
+            {% endif %}
+
+            <span style="color:#606060">[{{(post.theme)[0:2]}}]</span>
+            <a href="{{post.url}}" target="_blank" > {{post.title}}</a></div>
+        <div class="post-info"><a href="">{{(users.query.filter_by(id=post.author_id).first()).username}}</a> &nbsp;分享于&nbsp;<em>{{post.post_date}}</em>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+
+{% if pagination %}
+<div class="pagination">
+    {{ macros.pagination_widget(pagination, '.url_resources') }}
+</div>
+{% endif %}
+
+{% endblock %}
+
+
